@@ -1,0 +1,49 @@
+Racko
+game server
+	whose turn
+	
+	what fase is the game in
+	
+	deck
+	hand
+	discard
+
+	what is in each hand
+	
+routing manager
+	chat
+	mesage to client
+	userlist *
+	other mundain tasks
+
+client
+recives
+	player data
+	turn indicator
+	cards for player
+	card order
+	discard pile card
+
+server sends
+	userlist(pulic)
+		each player
+		turn indicator
+
+	cards(private)
+		cards
+		card order
+		dicard pile card
+clicables
+	cards in hand(form server)
+	discard pile card
+	button (to place card from deck pile not seen onto discard pile)
+client sends
+	routing stuff
+		connetion mesage
+		chat submitions form user
+
+	button(from above) was clicked
+	card from hand to be discarded
+	
+	
+	
