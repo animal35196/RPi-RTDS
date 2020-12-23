@@ -20,7 +20,7 @@ var app = express();
 app.use(express.static("./htmlRacko")); //working directory
 //Specifying the public folder of the server to make the html accesible using the static middleware
 
-var socket = 8080;
+var socket = 8081;
 //var server = http.createServer(app).listen(8080); //Server listens on the port 8124
 var server = http.createServer(app).listen(socket,"0.0.0.0",511,function(){console.log(__line,"Server connected to socket: "+socket);});//Server listens on the port 8124
 io = io.listen(server);
@@ -270,8 +270,8 @@ io.sockets.on("connection", function(socket) {
 			}
 			if( players[currentTurn%players.length].id === socket.id ){
 				var x = Math.floor(Math.random * pilesForGame[pileOn].length);
-				cardsInFaceUpPile.push(dealSingleTile(piles[pileOn]));
-				piles[pileOn].splice(x,1);
+				cardsInFaceUpPile.push(dealSingleTile(pilesForGame[pileOn]));
+				pilesForGame[pileOn].splice(x,1);
 				socket.emit('cards',cardsInFaceUpPile[cardsInFaceUpPile.length - 1],socket.userData.tiles);
 				console.log('switched the cards',pilesForGame[pileOn],cardsInFaceUpPile);
 				socket.emit('discard');
@@ -309,7 +309,7 @@ function cheakWin(playerToCheak){
 		console.log(__line,playerToCheak.userData);
 		let playersTiles = playerToCheak.userData.tiles;
 		for(var i = 0; i < playersTiles.length - 1;i++){
-			if(playersTiles[i] < playersTiles[i + 1]){
+			if(playersTiles[i+1] < playersTiles[i]){
 				tilesCorect++;
 			}else{
 				message(playerToCheak,'your tiles arnt in order, to win the game all your tiles must be in order from least to gratest',gameErrorColor);
@@ -320,8 +320,8 @@ function cheakWin(playerToCheak){
 
 		if(tilesCorect == playersTiles.length - 1){
 			for(let a = 0;a < playersTiles.length - 2;a++){
-				if(playersTiles[a] + 1 == playersTiles[a + 1]){
-					if(playersTiles[a] + 2 == playersTiles[a + 2]){
+				if(playersTiles[a] - 1 == playersTiles[a + 1]){
+					if(playersTiles[a] - 2 == playersTiles[a + 2]){
 						
 						runs++;
 					
@@ -330,9 +330,9 @@ function cheakWin(playerToCheak){
 			}
 			
 			if(runs > 0){
-				actilyGameEnd(playerToCheak.userData.userName);
+				actilyGameEnd(playerToCheak);
 			}else{
-				message(socket,'To win the game you must have at least one run of 3',gameErrorColor);
+				message(playerToCheak,'To win the game you must have at least one run of 3',gameErrorColor);
 			}
 		}
 	}
@@ -361,7 +361,7 @@ function message(socket, message, color){
 		data: "" + message,
 		color: color
 	};
-	console.log(socket,message,color);
+	console.log(message,color);
 	socket.emit('message',JSON.stringify(messageObj));
 }
 

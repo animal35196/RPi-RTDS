@@ -1,5 +1,5 @@
 //setup window
-var publicAddress = 'http://localhost:8080/';
+var publicAddress = 'http://alanisboard.ddns.net:8081';
 var internalAddress = 'http://localhost:8080/';
 
 window.addEventListener('load', function() {
