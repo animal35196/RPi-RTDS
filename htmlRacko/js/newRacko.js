@@ -183,7 +183,7 @@ class Card extends Button{
 		}
 	}
 	click(){
-		socket.emit('switch with deack',this);
+		socket.emit('switch with deack',{text:this.text,originalPile:this.originalPile});
 	}
 }
 
